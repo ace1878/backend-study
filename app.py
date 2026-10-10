@@ -9,3 +9,7 @@ def say_hello():
 @app.get("/status")
 def get_status():
     return{"status": "running", "message": "Server is working!"}
+
+@app.get("/hello/{name}")
+def greet(name: str):
+    return{"message": f"Hello, {name}!"}
