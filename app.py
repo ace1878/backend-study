@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Path, HTTPException
+from pydantic import BaseModel
 
 app = FastAPI()
 posts = [
@@ -37,3 +38,19 @@ def get_post(post_id: int):
 @app.get("/posts")
 def get_posts():
     return posts
+
+class PostCreate(BaseModel):
+    title: str
+    content: str
+
+@app.post("/posts")
+def create_post(post: PostCreate):
+    new_id = len(posts) + 1
+    new_post = {
+    "id": new_id,
+    "title": post.title,
+    "content": post.content
+    }
+    posts.append(new_post)
+    return new_post
+
