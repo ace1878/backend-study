@@ -54,3 +54,27 @@ def create_post(post: PostCreate):
     posts.append(new_post)
     return new_post
 
+@app.put("/posts/{post_id}")
+def update_post(post_id: int, post: PostCreate):
+    for existing_post in posts:
+        if existing_post["id"] == post_id:
+            existing_post["title"] = post.title
+            existing_post["content"] = post.content
+            return existing_post
+
+    raise HTTPException(
+        status_code=404,
+        detail="Post not found"
+    )
+
+@app.delete("/posts/{post_id}")
+def delete_post(post_id: int):
+    for existing_post in posts:
+        if existing_post["id"] == post_id:
+            posts.remove(existing_post)
+            return {"message": "Post deleted"}
+
+    raise HTTPException(
+        status_code=404,
+        detail="Post not found"
+    )
