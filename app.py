@@ -45,7 +45,11 @@ class PostCreate(BaseModel):
 
 @app.post("/posts")
 def create_post(post: PostCreate):
-    new_id = len(posts) + 1
+    post_ids = [post["id"] for post in posts]
+    if post_ids:
+       new_id = max(post_ids) + 1
+    else:
+        new_id = 1
     new_post = {
     "id": new_id,
     "title": post.title,
@@ -78,3 +82,4 @@ def delete_post(post_id: int):
         status_code=404,
         detail="Post not found"
     )
+
